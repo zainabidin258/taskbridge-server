@@ -5,6 +5,7 @@ import connectDB from './config/db';
 
 import authRoutes from './routes/authRoutes';
 import testRoutes from './routes/testRoutes';
+import boardRoutes from './routes/boardRoutes';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.get('/', (_req, res) => {
   res.send('TaskBridge API is running...');
 });
 app.use('/api/test', testRoutes);
+app.use('/api/boards', boardRoutes);
 
 // Start server
 app.listen(PORT, () => {

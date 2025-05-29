@@ -90,7 +90,7 @@ export const updateBoard = async (req: AuthRequest, res: Response): Promise<void
   }
 };
 
-export const deleteBoard = async (req: Request, res: Response): Promise<void> => {
+export const deleteBoard = async (req: AuthRequest, res: Response): Promise<void> => {
   const boardId = req.params.id;
   const userId = req.userId;
 

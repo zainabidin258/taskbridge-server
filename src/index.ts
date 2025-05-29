@@ -6,6 +6,7 @@ import connectDB from './config/db';
 import authRoutes from './routes/authRoutes';
 import testRoutes from './routes/testRoutes';
 import boardRoutes from './routes/boardRoutes';
+import taskRoutes from './routes/taskRoutes'
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.get('/', (_req, res) => {
 });
 app.use('/api/test', testRoutes);
 app.use('/api/boards', boardRoutes);
+app.use('/api/tasks', taskRoutes);
 
 // Start server
 app.listen(PORT, () => {

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Board from '../models/Board';
+import { verifyBoardOwnership } from '../utils/permissionUtils';
 
 // Import the extended type
 interface AuthRequest extends Request {
@@ -57,26 +58,14 @@ export const updateBoard = async (req: AuthRequest, res: Response): Promise<void
   try {
     const userId = req.userId;
     const boardId = req.params.id;
+    const board = await verifyBoardOwnership(boardId, userId ?? '')
     const { title, description } = req.body;
-
+    
     if (!userId) {
       res.status(401).json({ message: 'Unauthorized' });
       return;
     }
-
-    // Find the board to update
-    const board = await Board.findById(boardId);
-    if (!board) {
-      res.status(404).json({ message: 'Board not found' });
-      return;
-    }
-
-    // Only owner can update the board
-    if (board.owner.toString() !== userId) {
-      res.status(403).json({ message: 'Forbidden: Not the owner' });
-      return;
-    }
-
+    
     // Update fields if provided
     if (title !== undefined) board.title = title;
     if (description !== undefined) board.description = description;
@@ -93,16 +82,8 @@ export const updateBoard = async (req: AuthRequest, res: Response): Promise<void
 export const deleteBoard = async (req: AuthRequest, res: Response): Promise<void> => {
   const boardId = req.params.id;
   const userId = req.userId;
-
-  const board = await Board.findById(boardId);
-
-  if (!board) {
-    res.status(404).json({ message: 'Board not found' });
-  }
-
-  if (board?.owner.toString() !== userId) {
-    res.status(403).json({ message: 'Not authorized to delete this board' });
-  }
+  
+  const board = await verifyBoardOwnership(boardId, userId ?? '');
 
   await board?.deleteOne();
   res.status(200).json({ message: 'Board deleted successfully' });

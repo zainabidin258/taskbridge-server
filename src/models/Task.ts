@@ -8,6 +8,12 @@ const TaskSchema = new Schema<ITask>(
     status: { type: String, enum: ['todo', 'in-progress', 'done'], default: 'todo' },
     board: { type: Schema.Types.ObjectId, ref: 'Board', required: true },
     assignedTo: { type: Schema.Types.ObjectId, ref: 'User' },
+    dueDate: { type: Date },
+    priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium'},
+    subtasks: [{
+      title: String,
+      isCompleted: Boolean,
+    }],
   },
   { timestamps: true }
 );

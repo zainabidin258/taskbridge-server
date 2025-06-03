@@ -10,4 +10,10 @@ export interface ITask {
   assignedTo?: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
+  dueDate?: Date;
+  priority?: 'low' | 'medium' | 'high';
+  subtasks?: {
+    title: string;
+    isCompleted: boolean;
+  }[];
 }

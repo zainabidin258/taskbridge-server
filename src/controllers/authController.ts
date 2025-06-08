@@ -20,7 +20,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
     password: hashedPassword,
   }) as IUserDocument;
 
-  const token = generateToken(user._id.toString());
+  const token = generateToken(user._id.toString(), user.role);
   res.status(201).json({ user, token });
 };
 
@@ -39,7 +39,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  const token = generateToken((user as IUserDocument)._id.toString());
+  const token = generateToken((user as IUserDocument)._id.toString(), user.role);
   res.json({ user, token });
 };
 

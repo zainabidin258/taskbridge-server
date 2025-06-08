@@ -1,4 +1,4 @@
-import { IUserDocument } from './User';
+import { IUserDocument, UserRole } from './User';
 
 
 declare global {
@@ -6,6 +6,7 @@ declare global {
     interface Request {
       userId?: string;
       user?: IUserDocument | null;
+      role?: UserRole;
     }
   }
 }

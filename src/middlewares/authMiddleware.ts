@@ -2,12 +2,9 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
 
-interface AuthRequest extends Request {
-  user?: any;
-  userId?: string; // Optional userId to be set by the middleware
-}
 
-export const protect = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+
+export const protect = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   let token;
 
   if (

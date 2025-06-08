@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db';
 
+import './types/express-extensions';
+
 import authRoutes from './routes/authRoutes';
 import testRoutes from './routes/testRoutes';
 import boardRoutes from './routes/boardRoutes';

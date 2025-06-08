@@ -5,15 +5,8 @@ import { IBoard, IBoardDocument } from '../types/Board';
 import { verifyBoardOwnership } from '../utils/permissionUtils';
 import asyncHandler from 'express-async-handler';
 import mongoose from 'mongoose';
-// import "../types/express";
-interface AuthRequest extends Request {
-  userId?: string;
-  user?: any;
-}
-// @desc    Create a task
-// @route   POST /api/tasks
-// @access  Private
-export const createTask = asyncHandler(async (req: AuthRequest, res: Response) => {
+
+export const createTask = asyncHandler(async (req: Request, res: Response) => {
   const { title, description, status, board, assignedTo } = req.body;
   if (!title || !board) {
     res.status(400);
@@ -36,7 +29,7 @@ export const createTask = asyncHandler(async (req: AuthRequest, res: Response) =
 // @desc    Get all tasks for a specific board
 // @route   GET /api/tasks/board/:boardId
 // @access  Private
-export const getTasksByBoard = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getTasksByBoard = asyncHandler(async (req: Request, res: Response) => {
   const { boardId } = req.params;
   const userId = req.userId;
 
@@ -62,7 +55,7 @@ export const getTasksByBoard = asyncHandler(async (req: AuthRequest, res: Respon
   res.status(200).json(tasks);
 });
 
-export const updateTask = asyncHandler(async (req: AuthRequest, res: Response): Promise <void> => {
+export const updateTask = asyncHandler(async (req: Request, res: Response): Promise <void> => {
   const userId = req.userId;
   const { taskId } = req.params;
 
@@ -89,7 +82,7 @@ export const updateTask = asyncHandler(async (req: AuthRequest, res: Response): 
   res.status(200).json(updatedTask);
 });
 
-export const deleteTask = asyncHandler (async (req: AuthRequest, res: Response): Promise <void> =>{
+export const deleteTask = asyncHandler (async (req: Request, res: Response): Promise <void> =>{
   const {taskId} = req.params;
 
   const task = await Task.findById(taskId).populate('board');

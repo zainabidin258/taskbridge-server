@@ -3,12 +3,12 @@ import Board from '../models/Board';
 import { verifyBoardOwnership } from '../utils/permissionUtils';
 
 // Import the extended type
-interface AuthRequest extends Request {
-  userId?: string;
-  user?: any;
-}
+// interface AuthRequest extends Request {
+//   userId?: string;
+//   user?: any;
+// }
 
-export const createBoard = async (req: AuthRequest, res: Response): Promise<void> => {
+export const createBoard = async (req: Request, res: Response): Promise<void> => {
   try {
     const { title, description, members } = req.body;
     const owner = req.userId;
@@ -35,7 +35,7 @@ export const createBoard = async (req: AuthRequest, res: Response): Promise<void
   }
 };
 
-export const getBoards = async (req: AuthRequest, res: Response): Promise<void> => {
+export const getBoards = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
     if (!userId) {
@@ -54,7 +54,7 @@ export const getBoards = async (req: AuthRequest, res: Response): Promise<void> 
   }
 };
 
-export const updateBoard = async (req: AuthRequest, res: Response): Promise<void> => {
+export const updateBoard = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
     const boardId = req.params.id;
@@ -79,7 +79,7 @@ export const updateBoard = async (req: AuthRequest, res: Response): Promise<void
   }
 };
 
-export const deleteBoard = async (req: AuthRequest, res: Response): Promise<void> => {
+export const deleteBoard = async (req: Request, res: Response): Promise<void> => {
   const boardId = req.params.id;
   const userId = req.userId;
   

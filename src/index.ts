@@ -19,7 +19,10 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // frontend origin
+  credentials: true,
+}));
 app.use(express.json()); // Parse JSON bodies
 
 

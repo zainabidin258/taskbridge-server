@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import Board from '../models/Board';
+import Board  from '../models/Board';
+import { IUserDocument } from '../types/User';
 import { verifyBoardOwnership } from '../utils/permissionUtils';
 
 // Import the extended type
@@ -88,3 +89,39 @@ export const deleteBoard = async (req: Request, res: Response): Promise<void> =>
   await board?.deleteOne();
   res.status(200).json({ message: 'Board deleted successfully' });
 };
+
+export const getBoardById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { boardId } = req.params;
+    const userId = req.userId;
+
+    const board = await Board.findById(boardId)
+      .populate("owner", "name email")
+      .populate("members", "name email");
+
+    if (!board) {
+      res.status(404).json({ message: "Board not found" });
+      return;
+    }
+
+    const owner = board.owner as any;
+    const members = board.members as any[];
+
+    const isMember =
+      owner._id.toString() === userId ||
+      members.some((m) => m._id.toString() === userId);
+
+    if (!isMember) {
+      res.status(403).json({ message: "Not authorized" });
+      return;
+    }
+
+    res.status(200).json(board);
+    return;
+
+  } catch (error) {
+    console.error("Error fetching board:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
